@@ -14,7 +14,123 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      education: {
+        Row: {
+          created_at: string
+          degree: string | null
+          end_date: string | null
+          field_of_study: string | null
+          id: string
+          institution: string
+          is_current: boolean | null
+          start_date: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          degree?: string | null
+          end_date?: string | null
+          field_of_study?: string | null
+          id?: string
+          institution: string
+          is_current?: boolean | null
+          start_date?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          degree?: string | null
+          end_date?: string | null
+          field_of_study?: string | null
+          id?: string
+          institution?: string
+          is_current?: boolean | null
+          start_date?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          age: number | null
+          bio: string | null
+          created_at: string
+          email: string
+          id: string
+          legal_name: string
+          payam: string | null
+          phone_number: string | null
+          profile_photo_url: string | null
+          skills: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          age?: number | null
+          bio?: string | null
+          created_at?: string
+          email: string
+          id?: string
+          legal_name: string
+          payam?: string | null
+          phone_number?: string | null
+          profile_photo_url?: string | null
+          skills?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          age?: number | null
+          bio?: string | null
+          created_at?: string
+          email?: string
+          id?: string
+          legal_name?: string
+          payam?: string | null
+          phone_number?: string | null
+          profile_photo_url?: string | null
+          skills?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      work_experience: {
+        Row: {
+          company: string
+          created_at: string
+          description: string | null
+          end_date: string | null
+          id: string
+          is_current: boolean | null
+          position: string
+          start_date: string | null
+          user_id: string
+        }
+        Insert: {
+          company: string
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          is_current?: boolean | null
+          position: string
+          start_date?: string | null
+          user_id: string
+        }
+        Update: {
+          company?: string
+          created_at?: string
+          description?: string | null
+          end_date?: string | null
+          id?: string
+          is_current?: boolean | null
+          position?: string
+          start_date?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
