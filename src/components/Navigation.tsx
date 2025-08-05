@@ -58,12 +58,16 @@ const Navigation = () => {
 
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-3">
-            <Button variant="outline" size="sm">
-              Sign In
-            </Button>
-            <Button variant="secondary" size="sm">
-              Join BorNet
-            </Button>
+            <Link to="/auth">
+              <Button variant="outline" size="sm">
+                Sign In
+              </Button>
+            </Link>
+            <Link to="/join">
+              <Button variant="secondary" size="sm">
+                Join BorNet
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -93,12 +97,16 @@ const Navigation = () => {
                 </Link>
               ))}
               <div className="pt-3 border-t border-border space-y-2">
-                <Button variant="outline" className="w-full" size="sm">
-                  Sign In
-                </Button>
-                <Button variant="secondary" className="w-full" size="sm">
-                  Join BorNet
-                </Button>
+                <Link to="/auth" onClick={() => setIsOpen(false)}>
+                  <Button variant="outline" className="w-full" size="sm">
+                    Sign In
+                  </Button>
+                </Link>
+                <Link to="/join" onClick={() => setIsOpen(false)}>
+                  <Button variant="secondary" className="w-full" size="sm">
+                    Join BorNet
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>

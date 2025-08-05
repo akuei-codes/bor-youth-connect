@@ -9,6 +9,8 @@ import Map from "./pages/Map";
 import Spotlight from "./pages/Spotlight";
 import Opportunities from "./pages/Opportunities";
 import Forum from "./pages/Forum";
+import Auth from "./pages/Auth";
+import JoinBorNet from "./pages/JoinBorNet";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
           <Route path="/spotlight" element={<Spotlight />} />
           <Route path="/opportunities" element={<Opportunities />} />
           <Route path="/forum" element={<Forum />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/join" element={<JoinBorNet />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
