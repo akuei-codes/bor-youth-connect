@@ -4,6 +4,37 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { supabase } from '@/integrations/supabase/client';
+
+// Temporary type definitions until types are regenerated
+type ProfileUpdate = {
+  legal_name: string;
+  age: number;
+  payam: string;
+  phone_number?: string;
+  bio?: string;
+  skills: string[];
+  profile_photo_url: string | null;
+};
+
+type EducationInsert = {
+  user_id: string;
+  institution: string;
+  field_of_study?: string;
+  degree?: string;
+  start_date: string | null;
+  end_date: string | null;
+  is_current?: boolean;
+};
+
+type WorkExperienceInsert = {
+  user_id: string;
+  company: string;
+  position: string;
+  description?: string;
+  start_date: string | null;
+  end_date: string | null;
+  is_current?: boolean;
+};
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -192,7 +223,7 @@ const JoinBorNet = () => {
       }
 
       // Update profile
-      const { error: profileError } = await supabase
+      const { error: profileError } = await (supabase as any)
         .from('profiles')
         .update({
           legal_name: data.legal_name,
@@ -216,7 +247,7 @@ const JoinBorNet = () => {
           end_date: edu.end_date || null,
         }));
 
-        const { error: eduError } = await supabase
+        const { error: eduError } = await (supabase as any)
           .from('education')
           .insert(educationRecords);
 
@@ -232,7 +263,7 @@ const JoinBorNet = () => {
           end_date: work.end_date || null,
         }));
 
-        const { error: workError } = await supabase
+        const { error: workError } = await (supabase as any)
           .from('work_experience')
           .insert(workRecords);
 
