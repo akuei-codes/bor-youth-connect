@@ -136,7 +136,27 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_user_profile_from_auth: {
+        Args: { input_user_id: string }
+        Returns: {
+          id: string
+          user_id: string
+          legal_name: string
+          email: string
+          profile_photo_url: string
+          age: number
+          payam: string
+          phone_number: string
+          bio: string
+          skills: string[]
+          created_at: string
+          updated_at: string
+        }[]
+      }
+      update_profile_photo: {
+        Args: { target_user_id: string; photo_url: string }
+        Returns: boolean
+      }
     }
     Enums: {
       [_ in never]: never
