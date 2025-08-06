@@ -10,7 +10,7 @@ type ProfileUpdate = {
   legal_name: string;
   age: number;
   payam: string;
-  phone_number?: string;
+  phone?: string;
   bio?: string;
   skills: string[];
   profile_photo_url: string | null;
@@ -77,8 +77,8 @@ const joinSchema = z.object({
   legal_name: z.string().min(2, "Legal name must be at least 2 characters"),
   email: z.string().email("Please enter a valid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
-  phone_number: z.string().optional(),
-  age: z.number().min(13, "You must be at least 13 years old").max(120, "Please enter a valid age"),
+  phone: z.string().optional(),
+  age: z.coerce.number().min(13, "You must be at least 13 years old").max(120, "Please enter a valid age"),
   payam: z.string().min(1, "Please select your payam"),
   bio: z.string().optional(),
   skills: z.array(z.string()).default([]),
@@ -102,7 +102,7 @@ const JoinBorNet = () => {
       legal_name: '',
       email: '',
       password: '',
-      phone_number: '',
+      phone: '',
       age: 18,
       payam: '',
       bio: '',
@@ -222,32 +222,35 @@ const JoinBorNet = () => {
         }
       }
 
-      // Update profile
-      const { error: profileError } = await (supabase as any)
+      // Insert profile
+      const { error: profileError } = await supabase
         .from('profiles')
-        .update({
+        .insert({
+          user_id: authData.user.id,
           legal_name: data.legal_name,
+          email: data.email,
           age: data.age,
           payam: data.payam,
-          phone_number: data.phone_number,
+          phone: data.phone,
           bio: data.bio,
           skills: data.skills,
           profile_photo_url,
-        })
-        .eq('user_id', authData.user.id);
+        });
 
       if (profileError) throw profileError;
 
       // Insert education records
       if (data.education.length > 0) {
         const educationRecords = data.education.map(edu => ({
-          ...edu,
           user_id: authData.user.id,
-          start_date: edu.start_date || null,
-          end_date: edu.end_date || null,
+          institution: edu.institution,
+          field_of_study: edu.field_of_study,
+          degree: edu.degree,
+          start_year: edu.start_date ? parseInt(edu.start_date) : null,
+          end_year: edu.end_date ? parseInt(edu.end_date) : null,
         }));
 
-        const { error: eduError } = await (supabase as any)
+        const { error: eduError } = await supabase
           .from('education')
           .insert(educationRecords);
 
@@ -257,13 +260,15 @@ const JoinBorNet = () => {
       // Insert work experience records
       if (data.work_experience.length > 0) {
         const workRecords = data.work_experience.map(work => ({
-          ...work,
           user_id: authData.user.id,
-          start_date: work.start_date || null,
-          end_date: work.end_date || null,
+          company: work.company,
+          position: work.position,
+          description: work.description,
+          start_year: work.start_date ? parseInt(work.start_date) : null,
+          end_year: work.end_date ? parseInt(work.end_date) : null,
         }));
 
-        const { error: workError } = await (supabase as any)
+        const { error: workError } = await supabase
           .from('work_experience')
           .insert(workRecords);
 
@@ -370,7 +375,7 @@ const JoinBorNet = () => {
                               type="number" 
                               placeholder="Your age" 
                               {...field}
-                              onChange={(e) => field.onChange(parseInt(e.target.value))}
+                              onChange={(e) => field.onChange(e.target.value === '' ? 18 : parseInt(e.target.value) || 18)}
                             />
                           </FormControl>
                           <FormMessage />
@@ -397,7 +402,7 @@ const JoinBorNet = () => {
 
                     <FormField
                       control={form.control}
-                      name="phone_number"
+                      name="phone"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel className="flex items-center">
