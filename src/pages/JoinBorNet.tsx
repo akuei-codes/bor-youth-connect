@@ -222,20 +222,22 @@ const JoinBorNet = () => {
         }
       }
 
-      // Insert profile
+      // Wait a moment for the trigger to create the profile
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Update profile with additional details
       const { error: profileError } = await supabase
         .from('profiles')
-        .insert({
-          user_id: authData.user.id,
+        .update({
           legal_name: data.legal_name,
-          email: data.email,
           age: data.age,
           payam: data.payam,
           phone: data.phone,
           bio: data.bio,
           skills: data.skills,
           profile_photo_url,
-        });
+        })
+        .eq('user_id', authData.user.id);
 
       if (profileError) throw profileError;
 
