@@ -49,7 +49,7 @@ const ProfileEdit = () => {
 
       try {
         const { data, error } = await supabase.rpc('get_user_profile_from_auth', {
-          user_id: user.id
+          input_user_id: user.id
         });
 
         if (error) throw error;
