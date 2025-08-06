@@ -11,6 +11,9 @@ import Opportunities from "./pages/Opportunities";
 import Forum from "./pages/Forum";
 import Auth from "./pages/Auth";
 import JoinBorNet from "./pages/JoinBorNet";
+import Profile from "./pages/Profile";
+import ProfileEdit from "./pages/ProfileEdit";
+import ProfilePhoto from "./pages/ProfilePhoto";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -30,6 +33,9 @@ const App = () => (
           <Route path="/forum" element={<Forum />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/join" element={<JoinBorNet />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/edit" element={<ProfileEdit />} />
+          <Route path="/profile/photo" element={<ProfilePhoto />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
