@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import UserProfile from "@/components/UserProfile";
 import { 
   Home, 
   Users, 
@@ -56,18 +57,9 @@ const Navigation = () => {
             ))}
           </div>
 
-          {/* Desktop Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-3">
-            <Link to="/auth">
-              <Button variant="outline" size="sm">
-                Sign In
-              </Button>
-            </Link>
-            <Link to="/join">
-              <Button variant="secondary" size="sm">
-                Join BorNet
-              </Button>
-            </Link>
+          {/* Desktop Auth */}
+          <div className="hidden md:flex items-center">
+            <UserProfile />
           </div>
 
           {/* Mobile Menu Button */}
@@ -96,17 +88,10 @@ const Navigation = () => {
                   <span>{item.label}</span>
                 </Link>
               ))}
-              <div className="pt-3 border-t border-border space-y-2">
-                <Link to="/auth" onClick={() => setIsOpen(false)}>
-                  <Button variant="outline" className="w-full" size="sm">
-                    Sign In
-                  </Button>
-                </Link>
-                <Link to="/join" onClick={() => setIsOpen(false)}>
-                  <Button variant="secondary" className="w-full" size="sm">
-                    Join BorNet
-                  </Button>
-                </Link>
+              <div className="pt-3 border-t border-border">
+                <div className="flex justify-center">
+                  <UserProfile />
+                </div>
               </div>
             </div>
           </div>
