@@ -241,12 +241,6 @@ const JoinBorNet = () => {
 
       if (profileError) throw profileError;
 
-      // Refresh session to ensure RLS policies work correctly
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('Session not found after registration');
-      }
-
       // Insert education records
       if (data.education.length > 0) {
         const educationRecords = data.education.map(edu => ({
