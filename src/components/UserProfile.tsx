@@ -72,7 +72,7 @@ const UserProfile = () => {
   const fetchUserProfile = async (userId: string) => {
     try {
       const { data, error } = await supabase.rpc('get_user_profile_from_auth', {
-        input_user_id: userId
+        user_id: userId
       });
 
       if (error) throw error;
