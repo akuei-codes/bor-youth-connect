@@ -15,6 +15,7 @@ import Profile from "./pages/Profile";
 import ProfileEdit from "./pages/ProfileEdit";
 import ProfilePhoto from "./pages/ProfilePhoto";
 import NotFound from "./pages/NotFound";
+import PendingDataHandler from "./components/PendingDataHandler";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <PendingDataHandler />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/community" element={<Community />} />

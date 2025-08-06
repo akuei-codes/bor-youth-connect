@@ -241,40 +241,14 @@ const JoinBorNet = () => {
 
       if (profileError) throw profileError;
 
-      // Insert education records
-      if (data.education.length > 0) {
-        const educationRecords = data.education.map(edu => ({
-          user_id: authData.user.id,
-          institution: edu.institution,
-          field_of_study: edu.field_of_study,
-          degree: edu.degree,
-          start_year: edu.start_date ? parseInt(edu.start_date) : null,
-          end_year: edu.end_date ? parseInt(edu.end_date) : null,
-        }));
-
-        const { error: eduError } = await supabase
-          .from('education')
-          .insert(educationRecords);
-
-        if (eduError) throw eduError;
-      }
-
-      // Insert work experience records
-      if (data.work_experience.length > 0) {
-        const workRecords = data.work_experience.map(work => ({
-          user_id: authData.user.id,
-          company: work.company,
-          position: work.position,
-          description: work.description,
-          start_year: work.start_date ? parseInt(work.start_date) : null,
-          end_year: work.end_date ? parseInt(work.end_date) : null,
-        }));
-
-        const { error: workError } = await supabase
-          .from('work_experience')
-          .insert(workRecords);
-
-        if (workError) throw workError;
+      // Store data in localStorage to insert after authentication is established
+      if (data.education.length > 0 || data.work_experience.length > 0) {
+        const pendingData = {
+          education: data.education,
+          workExperience: data.work_experience,
+          userId: authData.user.id
+        };
+        localStorage.setItem('pendingProfileData', JSON.stringify(pendingData));
       }
 
       toast({
