@@ -21,9 +21,8 @@ type EducationInsert = {
   institution: string;
   field_of_study?: string;
   degree?: string;
-  start_date: string | null;
-  end_date: string | null;
-  is_current?: boolean;
+  start_year: number | null;
+  end_year: number | null;
 };
 
 type WorkExperienceInsert = {
@@ -31,9 +30,8 @@ type WorkExperienceInsert = {
   company: string;
   position: string;
   description?: string;
-  start_date: string | null;
-  end_date: string | null;
-  is_current?: boolean;
+  start_year: number | null;
+  end_year: number | null;
 };
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -59,18 +57,16 @@ const educationSchema = z.object({
   institution: z.string().min(1, "Institution is required"),
   degree: z.string().optional(),
   field_of_study: z.string().optional(),
-  start_date: z.string().optional(),
-  end_date: z.string().optional(),
-  is_current: z.boolean().default(false),
+  start_year: z.coerce.number().optional(),
+  end_year: z.coerce.number().optional(),
 });
 
 const workExperienceSchema = z.object({
   company: z.string().min(1, "Company is required"),
   position: z.string().min(1, "Position is required"),
   description: z.string().optional(),
-  start_date: z.string().optional(),
-  end_date: z.string().optional(),
-  is_current: z.boolean().default(false),
+  start_year: z.coerce.number().optional(),
+  end_year: z.coerce.number().optional(),
 });
 
 const joinSchema = z.object({
@@ -151,9 +147,8 @@ const JoinBorNet = () => {
       institution: '',
       degree: '',
       field_of_study: '',
-      start_date: '',
-      end_date: '',
-      is_current: false,
+      start_year: undefined,
+      end_year: undefined,
     }]);
   };
 
@@ -168,9 +163,8 @@ const JoinBorNet = () => {
       company: '',
       position: '',
       description: '',
-      start_date: '',
-      end_date: '',
-      is_current: false,
+      start_year: undefined,
+      end_year: undefined,
     }]);
   };
 
@@ -241,22 +235,51 @@ const JoinBorNet = () => {
 
       if (profileError) throw profileError;
 
-      // Store data in localStorage to insert after authentication is established
-      if (data.education.length > 0 || data.work_experience.length > 0) {
-        const pendingData = {
-          education: data.education,
-          workExperience: data.work_experience,
-          userId: authData.user.id
-        };
-        localStorage.setItem('pendingProfileData', JSON.stringify(pendingData));
+      // Insert education and work experience directly
+      if (data.education.length > 0) {
+        const educationData = data.education.map(edu => ({
+          user_id: authData.user.id,
+          institution: edu.institution,
+          degree: edu.degree || null,
+          field_of_study: edu.field_of_study || null,
+          start_year: edu.start_year || null,
+          end_year: edu.end_year || null,
+        }));
+
+        const { error: educationError } = await supabase
+          .from('education')
+          .insert(educationData);
+
+        if (educationError) {
+          console.error('Education insert error:', educationError);
+        }
+      }
+
+      if (data.work_experience.length > 0) {
+        const workData = data.work_experience.map(work => ({
+          user_id: authData.user.id,
+          company: work.company,
+          position: work.position,
+          description: work.description || null,
+          start_year: work.start_year || null,
+          end_year: work.end_year || null,
+        }));
+
+        const { error: workError } = await supabase
+          .from('work_experience')
+          .insert(workData);
+
+        if (workError) {
+          console.error('Work experience insert error:', workError);
+        }
       }
 
       toast({
         title: "Welcome to BorNet!",
-        description: "Your profile has been created successfully. Please check your email to verify your account.",
+        description: "Your profile has been created successfully. You are now logged in.",
       });
 
-      navigate('/auth');
+      navigate('/');
 
     } catch (error: any) {
       console.error('Registration error:', error);
@@ -560,12 +583,17 @@ const JoinBorNet = () => {
                         <div className="grid grid-cols-2 gap-2">
                           <FormField
                             control={form.control}
-                            name={`education.${index}.start_date`}
+                            name={`education.${index}.start_year`}
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Start Date</FormLabel>
+                                <FormLabel>Start Year</FormLabel>
                                 <FormControl>
-                                  <Input type="date" {...field} />
+                                  <Input 
+                                    type="number" 
+                                    placeholder="2020" 
+                                    {...field}
+                                    onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : undefined)}
+                                  />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -574,12 +602,17 @@ const JoinBorNet = () => {
 
                           <FormField
                             control={form.control}
-                            name={`education.${index}.end_date`}
+                            name={`education.${index}.end_year`}
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>End Date</FormLabel>
+                                <FormLabel>End Year</FormLabel>
                                 <FormControl>
-                                  <Input type="date" {...field} />
+                                  <Input 
+                                    type="number" 
+                                    placeholder="2024" 
+                                    {...field}
+                                    onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : undefined)}
+                                  />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -650,12 +683,17 @@ const JoinBorNet = () => {
                         <div className="grid grid-cols-2 gap-2">
                           <FormField
                             control={form.control}
-                            name={`work_experience.${index}.start_date`}
+                            name={`work_experience.${index}.start_year`}
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Start Date</FormLabel>
+                                <FormLabel>Start Year</FormLabel>
                                 <FormControl>
-                                  <Input type="date" {...field} />
+                                  <Input 
+                                    type="number" 
+                                    placeholder="2020" 
+                                    {...field}
+                                    onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : undefined)}
+                                  />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -664,12 +702,17 @@ const JoinBorNet = () => {
 
                           <FormField
                             control={form.control}
-                            name={`work_experience.${index}.end_date`}
+                            name={`work_experience.${index}.end_year`}
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>End Date</FormLabel>
+                                <FormLabel>End Year</FormLabel>
                                 <FormControl>
-                                  <Input type="date" {...field} />
+                                  <Input 
+                                    type="number" 
+                                    placeholder="2024" 
+                                    {...field}
+                                    onChange={(e) => field.onChange(e.target.value ? parseInt(e.target.value) : undefined)}
+                                  />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
