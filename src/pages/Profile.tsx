@@ -12,13 +12,12 @@ import Footer from '@/components/Footer';
 
 interface UserProfile {
   id: string;
-  user_id: string;
   legal_name: string;
   email: string;
   profile_photo_url: string | null;
   age: number | null;
   payam: string | null;
-  phone_number: string | null;
+  phone: string | null;
   bio: string | null;
   skills: string[] | null;
   created_at: string;
@@ -43,7 +42,7 @@ const Profile = () => {
 
       try {
         const { data, error } = await supabase.rpc('get_user_profile_from_auth', {
-          user_id: user.id
+          input_user_id: user.id
         });
 
         if (error) throw error;
@@ -148,10 +147,10 @@ const Profile = () => {
                   <Mail className="w-5 h-5 text-muted-foreground" />
                   <span>{profile.email}</span>
                 </div>
-                {profile.phone_number && (
+                {profile.phone && (
                   <div className="flex items-center space-x-3">
                     <Phone className="w-5 h-5 text-muted-foreground" />
-                    <span>{profile.phone_number}</span>
+                    <span>{profile.phone}</span>
                   </div>
                 )}
                 {profile.payam && (

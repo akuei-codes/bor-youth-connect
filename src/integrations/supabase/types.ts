@@ -17,35 +17,35 @@ export type Database = {
       education: {
         Row: {
           created_at: string
-          degree: string | null
-          end_date: string | null
+          degree: string
+          end_year: number | null
           field_of_study: string | null
           id: string
           institution: string
-          is_current: boolean | null
-          start_date: string | null
+          start_year: number | null
+          updated_at: string
           user_id: string
         }
         Insert: {
           created_at?: string
-          degree?: string | null
-          end_date?: string | null
+          degree: string
+          end_year?: number | null
           field_of_study?: string | null
           id?: string
           institution: string
-          is_current?: boolean | null
-          start_date?: string | null
+          start_year?: number | null
+          updated_at?: string
           user_id: string
         }
         Update: {
           created_at?: string
-          degree?: string | null
-          end_date?: string | null
+          degree?: string
+          end_year?: number | null
           field_of_study?: string | null
           id?: string
           institution?: string
-          is_current?: boolean | null
-          start_date?: string | null
+          start_year?: number | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -55,11 +55,11 @@ export type Database = {
           age: number | null
           bio: string | null
           created_at: string
-          email: string
+          email: string | null
           id: string
           legal_name: string
           payam: string | null
-          phone_number: string | null
+          phone: string | null
           profile_photo_url: string | null
           skills: string[] | null
           updated_at: string
@@ -69,11 +69,11 @@ export type Database = {
           age?: number | null
           bio?: string | null
           created_at?: string
-          email: string
+          email?: string | null
           id?: string
           legal_name: string
           payam?: string | null
-          phone_number?: string | null
+          phone?: string | null
           profile_photo_url?: string | null
           skills?: string[] | null
           updated_at?: string
@@ -83,11 +83,11 @@ export type Database = {
           age?: number | null
           bio?: string | null
           created_at?: string
-          email?: string
+          email?: string | null
           id?: string
           legal_name?: string
           payam?: string | null
-          phone_number?: string | null
+          phone?: string | null
           profile_photo_url?: string | null
           skills?: string[] | null
           updated_at?: string
@@ -100,33 +100,33 @@ export type Database = {
           company: string
           created_at: string
           description: string | null
-          end_date: string | null
+          end_year: number | null
           id: string
-          is_current: boolean | null
           position: string
-          start_date: string | null
+          start_year: number | null
+          updated_at: string
           user_id: string
         }
         Insert: {
           company: string
           created_at?: string
           description?: string | null
-          end_date?: string | null
+          end_year?: number | null
           id?: string
-          is_current?: boolean | null
           position: string
-          start_date?: string | null
+          start_year?: number | null
+          updated_at?: string
           user_id: string
         }
         Update: {
           company?: string
           created_at?: string
           description?: string | null
-          end_date?: string | null
+          end_year?: number | null
           id?: string
-          is_current?: boolean | null
           position?: string
-          start_date?: string | null
+          start_year?: number | null
+          updated_at?: string
           user_id?: string
         }
         Relationships: []
@@ -140,15 +140,14 @@ export type Database = {
         Args: { input_user_id: string }
         Returns: {
           id: string
-          user_id: string
           legal_name: string
-          email: string
-          profile_photo_url: string
           age: number
+          email: string
+          phone: string
           payam: string
-          phone_number: string
           bio: string
           skills: string[]
+          profile_photo_url: string
           created_at: string
           updated_at: string
         }[]

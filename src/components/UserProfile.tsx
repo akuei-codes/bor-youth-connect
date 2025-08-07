@@ -17,13 +17,12 @@ import { useNavigate } from 'react-router-dom';
 
 interface UserProfile {
   id: string;
-  user_id: string;
   legal_name: string;
   email: string;
   profile_photo_url: string | null;
   age: number | null;
   payam: string | null;
-  phone_number: string | null;
+  phone: string | null;
   bio: string | null;
   skills: string[] | null;
   created_at: string;
@@ -72,7 +71,7 @@ const UserProfile = () => {
   const fetchUserProfile = async (userId: string) => {
     try {
       const { data, error } = await supabase.rpc('get_user_profile_from_auth', {
-        user_id: userId
+        input_user_id: userId
       });
 
       if (error) throw error;

@@ -15,13 +15,12 @@ import Footer from '@/components/Footer';
 
 interface UserProfile {
   id: string;
-  user_id: string;
   legal_name: string;
   email: string;
   profile_photo_url: string | null;
   age: number | null;
   payam: string | null;
-  phone_number: string | null;
+  phone: string | null;
   bio: string | null;
   skills: string[] | null;
   created_at: string;
@@ -49,7 +48,7 @@ const ProfileEdit = () => {
 
       try {
         const { data, error } = await supabase.rpc('get_user_profile_from_auth', {
-          user_id: user.id
+          input_user_id: user.id
         });
 
         if (error) throw error;
@@ -78,7 +77,7 @@ const ProfileEdit = () => {
           legal_name: profile.legal_name,
           age: profile.age,
           payam: profile.payam,
-          phone_number: profile.phone_number,
+          phone: profile.phone,
           bio: profile.bio,
           skills: profile.skills,
         })
@@ -183,11 +182,11 @@ const ProfileEdit = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="phone_number">Phone Number</Label>
+                <Label htmlFor="phone">Phone Number</Label>
                 <Input
-                  id="phone_number"
-                  value={profile.phone_number || ''}
-                  onChange={(e) => setProfile({ ...profile, phone_number: e.target.value })}
+                  id="phone"
+                  value={profile.phone || ''}
+                  onChange={(e) => setProfile({ ...profile, phone: e.target.value })}
                 />
               </div>
 
