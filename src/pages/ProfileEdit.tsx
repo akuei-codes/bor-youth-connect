@@ -12,6 +12,8 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import Navigation from '@/components/Navigation';
 import Footer from '@/components/Footer';
+import EducationSection from '@/components/EducationSection';
+import WorkExperienceSection from '@/components/WorkExperienceSection';
 
 interface UserProfile {
   id: string;
@@ -30,6 +32,8 @@ interface UserProfile {
 const ProfileEdit = () => {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [education, setEducation] = useState<any[]>([]);
+  const [workExperience, setWorkExperience] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [newSkill, setNewSkill] = useState('');
@@ -55,6 +59,28 @@ const ProfileEdit = () => {
         
         if (data && data.length > 0) {
           setProfile(data[0]);
+        }
+
+        // Fetch education
+        const { data: educationData } = await supabase
+          .from('education')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('start_year', { ascending: false });
+
+        if (educationData) {
+          setEducation(educationData);
+        }
+
+        // Fetch work experience
+        const { data: workData } = await supabase
+          .from('work_experience')
+          .select('*')
+          .eq('user_id', user.id)
+          .order('start_year', { ascending: false });
+
+        if (workData) {
+          setWorkExperience(workData);
         }
       } catch (error) {
         console.error('Error fetching profile:', error);
@@ -247,6 +273,20 @@ const ProfileEdit = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Education Section */}
+          <EducationSection
+            userId={user?.id || ''}
+            education={education}
+            onUpdate={setEducation}
+          />
+
+          {/* Work Experience Section */}
+          <WorkExperienceSection
+            userId={user?.id || ''}
+            workExperience={workExperience}
+            onUpdate={setWorkExperience}
+          />
         </div>
       </main>
 
